@@ -1,74 +1,78 @@
-var map = L.map('map').setView([52.44251260319042, 18.921683024307846], 7);
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-map.doubleClickZoom.disable()
-map.scrollWheelZoom.disable()
-function liczba(){
-    return Math.floor(Math.random() * wojewodztwa.features.length-1)
+var map = L.map('map').setView([52.15088015338915, 18.979287672131708], 7);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+{minZoom:7,maxZoom: 7,
+attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+var wojL = []
+var wojSprawdz = ""
+function mapa(){
+    for(let i=0;i<=woje.features.length-1;i++){
+        var woj = woje.features[i]
+        var mapwoje = L.geoJSON(woj,{color:"blue"}).addTo(map)
+        mapwoje.on("mouseover",(e)=>{
+        if(wojL[i].options.color=="blue"){
+                wojL[i].setStyle({
+                    color:"pink",
+                    weight:3,
+                })
+            }
+        })
+        mapwoje.on("mouseout",(e)=>{
+            if(wojL[i].options.color =="blue"){
+                wojL[i].setStyle({
+                    color:"blue",
+                    
+                })
+            }
+        })
+        mapwoje.name= woje.features[i].properties.nazwa
+        wojL.push(mapwoje)
+    }
 }
-
-console.log(wojewodztwa.features)
-
-var points=0
-var live=3
-
-
-
-function start(){
-     licz=liczba()
-    var woj=document.getElementById('woj')
-    
-    var wojewodztwo=wojewodztwa.features[licz].properties.nazwa
-    
-    woj.innerHTML=wojewodztwo
-    //console.log(wojewodztwo)
-    document.getElementById('punkty').innerHTML="punkty: "+points
-    document.getElementById('live').innerHTML="lives: "+live
-
-
+mapa()
+var wojela = L.geoJson(woje.features).addTo(map);
+wojela.setStyle({color:"none"})
+var wojdos = wojela.getLayers()
+function losuj() {
+    if (wojdos.length === 0) {
+        return null;
+    }
+    var wylosowanyIndex = Math.floor(Math.random() * wojdos.length)
+    var wylosowane = wojdos[wylosowanyIndex]
+    var nazwaWojewodztwa = wylosowane.feature.properties.nazwa
+    wojdos.splice(wylosowanyIndex, 1)
+    return nazwaWojewodztwa
 }
-
-var warstwa=[]
-for(let i=0;i<=wojewodztwa.features.length-1;i++){
-    
-    var wojewodztwo=wojewodztwa.features[i]
-    var mapwoj= L.geoJSON(wojewodztwo).addTo(map)
-    
-    mapwoj.on('click',function(e){
-        
-const wybrane=e.layer.feature.properties.nazwa
-console.log(wybrane)
-
-        if(wybrane==wojewodztwa.features[licz].properties.nazwa){
-            document.getElementById('odp').innerHTML='dobrze'
-            console.log("dobrze")
-            points=points+1
-            document.getElementById('punkty').innerHTML="punkty: "+points
-            marker(e.latlng)
-            start()
-
+function start() {
+    var wylosowaneWojewodztwo = losuj()
+    if (wylosowaneWojewodztwo !== null) {
+        wojSprawdz =  wylosowaneWojewodztwo
+        for(let i=0;i<=wojL.length-1;i++){
+            if(wojL[i].licznik==1&& wojL[i].options.color =="yellow"){
+                wojL[i].setStyle({color:"red"})
+                wojL[i].options.color = "red"
+            }
+            if(wojL[i].name==wylosowaneWojewodztwo){
+                wojL[i].setStyle({color:"yellow"})
+                wojL[i].options.color = "yellow"
+                wojL[i].licznik = 1
+            }
         }
-else{ 
-    document.getElementById('odp').innerHTML='źle'
-    console.log("źle")
-    document.getElementById('live').innerHTML="lives: "+live
-    live=live-1
-    marker(e.latlng)
-
-
-start()
-}   
-if(live==0){
-    document.getElementById('odp').innerHTML='Game Over'
-    return 0
+    } else {
+    }
 }
-function marker(latlng){
-    L.marker(latlng).addTo(map)
-}
-
-document.getElementById("gora").innerHTML=""
-})      
+function sprawdz(){ 
+        for(let i=0;i<=wojL.length-1;i++){
+            console.log(wojL[i].name)
+            if(wojL[i].name == wojSprawdz){
+                
+            if(document.getElementById("input").value==wojSprawdz){
+                wojL[i].setStyle({color:"green"})
+                wojL[i].options.color = "green"
+            }
+            else{
+                wojL[i].setStyle({color:"red"})
+                wojL[i].options.color = "red"
+            }
+            }
+        }
 }
