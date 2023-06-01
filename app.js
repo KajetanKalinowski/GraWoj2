@@ -4,6 +4,12 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 var wojL = []
 var wojSprawdz = ""
+var losy=0
+var dobrze = 0
+
+var zle = 0
+
+
 function mapa(){
     for(let i=0;i<=woje.features.length-1;i++){
         var woj = woje.features[i]
@@ -43,6 +49,7 @@ function losuj() {
     return nazwaWojewodztwa
 }
 function start() {
+    document.getElementById("losuj").style.visibility = "hidden"
     var wylosowaneWojewodztwo = losuj()
     if (wylosowaneWojewodztwo !== null) {
         wojSprawdz =  wylosowaneWojewodztwo
@@ -59,20 +66,34 @@ function start() {
         }
     } else {
     }
+    console.log(losy)
+    
 }
 function sprawdz(){ 
         for(let i=0;i<=wojL.length-1;i++){
             console.log(wojL[i].name)
             if(wojL[i].name == wojSprawdz){
-                
             if(document.getElementById("input").value==wojSprawdz){
                 wojL[i].setStyle({color:"green"})
                 wojL[i].options.color = "green"
+                dobrze++
+                losy++
+
             }
             else{
                 wojL[i].setStyle({color:"red"})
                 wojL[i].options.color = "red"
+                zle++
+                losy++
             }
             }
         }
+
+        if(losy==16){
+            document.getElementById("koniec").style.zIndex = 5
+            document.getElementById("h3.1").innerHTML = "Dobre: "+dobrze
+            document.getElementById("h3.2").innerHTML = "Złe: "+zle
+        
+        }
+        start()
 }
