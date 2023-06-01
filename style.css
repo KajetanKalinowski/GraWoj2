@@ -43,3 +43,13 @@ body{
     align-items: center;
     flex-direction: column;
 }
+#ul1{
+    display: flex;
+    color:green;
+    flex-direction: column;
+}
+#ul2{
+    display: flex;
+    color:red;
+    flex-direction: column;
+}

@@ -5,9 +5,10 @@ attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreet
 var wojL = []
 var wojSprawdz = ""
 var losy=0
-var dobrze = 0
+var dobrze = []
 
-var zle = 0
+var zle = []
+
 
 
 function mapa(){
@@ -76,14 +77,14 @@ function sprawdz(){
             if(document.getElementById("input").value==wojSprawdz){
                 wojL[i].setStyle({color:"green"})
                 wojL[i].options.color = "green"
-                dobrze++
+                dobrze.push(wojSprawdz)
                 losy++
 
             }
             else{
                 wojL[i].setStyle({color:"red"})
                 wojL[i].options.color = "red"
-                zle++
+                zle.push(wojSprawdz)
                 losy++
             }
             }
@@ -91,8 +92,8 @@ function sprawdz(){
 
         if(losy==16){
             document.getElementById("koniec").style.zIndex = 5
-            document.getElementById("h3.1").innerHTML = "Dobre: "+dobrze
-            document.getElementById("h3.2").innerHTML = "Złe: "+zle
+            document.getElementById("ul1").innerHTML = dobrze
+            document.getElementById("ul2").innerHTML = zle
         
         }
         start()
