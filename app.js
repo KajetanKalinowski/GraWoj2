@@ -92,9 +92,10 @@ function sprawdz(){
 
         if(losy==16){
             document.getElementById("koniec").style.zIndex = 5
-            document.getElementById("ul1").innerHTML ="Dobre odpowiedzi: "+ dobrze
-            document.getElementById("ul2").innerHTML ="Złe odpowiedzi: "+ zle
+            document.getElementById("ul1").innerHTML ="Dobre odpowiedzi: "+dobrze
+            document.getElementById("ul2").innerHTML ="Złe odpowiedzi: "+zle
         
+            
         }
         start()
 }
